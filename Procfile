@@ -1,0 +1,1 @@
+web: gunicorn age_gender_final:app
