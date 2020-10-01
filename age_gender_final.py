@@ -1,10 +1,6 @@
-
-
 from flask import Flask,render_template,redirect,request
 import os
-
 import cv2 as cv
-
 
 app=Flask(__name__)
 
@@ -15,7 +11,6 @@ def getFaceBox(net, frame, conf_threshold=0.7):
     frameHeight = frameOpencvDnn.shape[0]
     frameWidth = frameOpencvDnn.shape[1]
     blob = cv.dnn.blobFromImage(frameOpencvDnn, 1.0, (300, 300), [104, 117, 123], True, False)
-
     net.setInput(blob)
     detections = net.forward()
     bboxes = []
@@ -34,38 +29,32 @@ def getFaceBox(net, frame, conf_threshold=0.7):
 
 faceProto = "opencv_face_detector.pbtxt"
 faceModel = "opencv_face_detector_uint8.pb"
-
 ageProto = "age_deploy.prototxt"
 ageModel = "age_net.caffemodel"
-
 genderProto = "gender_deploy.prototxt"
 genderModel = "gender_net.caffemodel"
-
 MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
 ageList = ['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
 genderList = ['Male', 'Female']
-
-# Load network
+# load network
 ageNet = cv.dnn.readNetFromCaffe(ageProto,ageModel)
 genderNet = cv.dnn.readNetFromCaffe(genderProto,genderModel)
 faceNet = cv.dnn.readNet(faceModel,faceProto)
 
 
-
-
-
-
+#creating the home page
 
 @app.route('/')
 def hello():
     return render_template("age_gender.html")
 
 
-
+#creating the home route for redirecting
 @app.route("/home")
 def home():
     return redirect('/')
 
+#creating route for submiting button
 @app.route('/submit_cdc',methods=['POST'])
 def submit_data():
     if request.method == 'POST':
@@ -78,8 +67,6 @@ def submit_data():
         frame = cv.imread(image)
 
         padding = 20
-        
-        
         
         
         
@@ -109,7 +96,7 @@ def submit_data():
         
         return  render_template("age_gender_img.html" , msg_age=msg_age,msg_gender=msg_gender,user_image = full_filename)
     
-
+#intializing the app
 if __name__ =="__main__":
     
     
