@@ -1,7 +1,7 @@
 numpy
 pandas
 opencv-python-headless
-tensorflow==1.15.4
+tensorflow==2.6.4
 matplotlib
 keras==2.2.5
 Click==7.0
